@@ -1,7 +1,5 @@
-from socket import send_fds
-
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -17,7 +15,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     image = models.ImageField(upload_to='image/',blank=True,null=True)
-    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='image')
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='images')
 
     def __str__(self):
         return self.product.name
