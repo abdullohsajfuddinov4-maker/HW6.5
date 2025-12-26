@@ -1,3 +1,33 @@
+from socket import send_fds
+
 from django.db import models
 
 # Create your models here.
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10,decimal_places=2)
+    discount_price = models.DecimalField(max_digits=10,decimal_places=2)
+    image = models.ImageField(upload_to='image/',blank=True,null=True)
+    desc = models.TextField()
+    quantity = models.PositiveIntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ProductImage(models.Model):
+    image = models.ImageField(upload_to='image/',blank=True,null=True)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='image')
+
+    def __str__(self):
+        return self.product.name
+
+
+class ProductExtraInfo(models.Model):
+    size = models.PositiveIntegerField(blank=True,null=True)
+    color = models.CharField(max_length=100)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='extra_info')
+
+    def __str__(self):
+        return self.product.name
+
