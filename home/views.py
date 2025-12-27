@@ -17,6 +17,7 @@ def product_detail(request,pk):
 def contact(request):
     return render(request,'contact.html')
 
+
 def products(request):
     product = Product.objects.all().order_by('-id')
     context = {'product': product}
