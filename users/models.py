@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from home.models import Product
+from decimal import Decimal
 from django.shortcuts import render
 
 
@@ -14,19 +16,21 @@ class CustomUser(User):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
-    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    total_price = models.PositiveIntegerField(default=0)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
-    def save(self,*args,**kwargs):
+    def save(self, *args, **kwargs):
         price = self.product.discount_price or self.product.price
-        total_price = price * self.quantity
-        self.total_price = total_price
-        super().save(*args,**kwargs)
+        self.total_price = Decimal(price) * Decimal(self.quantity)
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.user.username}-{self.product.name}'
+        return f'{self.user.username} - {self.product.name}'
 
 class Order(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
