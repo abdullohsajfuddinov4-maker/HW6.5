@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.views import View
@@ -20,6 +21,12 @@ def cart_detail(request):
     items = Cart.objects.filter(user=user)
     context = {'items':items}
     return render(request,'shop-cart.html',context)
+
+@login_required
+def clear_cart(request):
+    user = request.user
+    Cart.objects.filter(user=user).delete()
+    return redirect('cart_detail')
 
 
 def cart_delete(request, pk):
