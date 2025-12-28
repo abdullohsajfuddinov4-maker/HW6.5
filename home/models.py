@@ -38,3 +38,7 @@ class ProductExtraInfo(models.Model):
     def __str__(self):
         return self.product.name
 
+
+class Image_in_home(models.Model):
+    image = models.ImageField(upload_to='image_in_home/')
+

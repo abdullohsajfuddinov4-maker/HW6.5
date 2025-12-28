@@ -48,8 +48,9 @@
           <div class="header-logo-area">
             <a href="index.html">
               <img class="logo-main" src="{% static 'assets/img/logo.png' %}" alt="Logo" />
-                <img class="logo-light" src="{% static 'assets/img/logo.png' %}" alt="Logo" />
-
+                {% if image %}
+                    <img class="logo-main" src="{{ image.image.url }}" alt="Logo">
+                {% endif %}
             </a>
           </div>
         </div>
@@ -77,6 +78,7 @@
                   <li><a href="contact.html">Contact Us</a></li>
                   <li><a href="blog.html">Blog</a></li>
                   <li><a href="{% url 'login' %}">Login</a></li>
+                  <li><a href="{% url 'logout' %}">Login</a></li>
                 </ul>
               </div>
               <div class="header-action-cart">
